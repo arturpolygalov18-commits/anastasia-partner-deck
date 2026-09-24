@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Совместный эфир для канала «ГЕМБА ДУБОВЕНКО»</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;scrollbar-width:none}
+body{
+  display:flex;                /* страницы в ряд */
+  flex-direction:row;
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  background:#0d2b4d;color:#fff;
+  font-family:'Segoe UI',sans-serif;
+}
+body::-webkit-scrollbar,html::-webkit-scrollbar{display:none;width:0;height:0}
+.page{flex:0 0 100vw;width:100vw;height:100dvh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;padding:20px 24px 64px;position:relative}
+.frame{width:min(100%,calc((100dvh - 88px)*16/9));aspect-ratio:16/9;position:relative;border-radius:10px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.45);background:#fff}.page:nth-of-type(4) .frame{background:#1e4c7a}
+.frame img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;user-select:none;-webkit-user-drag:none}
+.hotspot{position:absolute;display:block;z-index:2;border-radius:10px}
+.hotspot:focus-visible{outline:3px solid #ffc83d;outline-offset:3px}
+.progress{position:fixed;top:0;left:0;height:3px;background:#ffc83d;z-index:10;width:0}
+.counter{position:fixed;bottom:22px;right:28px;font-size:12px;opacity:.75;font-variant-numeric:tabular-nums;z-index:10}
+.hint{position:fixed;bottom:23px;left:28px;font-size:12px;opacity:.55;z-index:10}
+.nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:20}
+.nav button{width:52px;height:44px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;border-radius:8px}
+.nav button:hover{background:#ffc83d;color:#0d2b4d;border-color:#ffc83d}
+@media(max-width:700px){
+  body{overscroll-behavior-x:contain;touch-action:pan-x}
+  .page{padding:10px 10px 78px;align-items:center}
+  .frame{width:calc(100vw - 20px);max-width:none;aspect-ratio:16/9;border-radius:8px;box-shadow:0 12px 36px rgba(0,0,0,.38)}
+  .hint{display:none}
+  .counter{right:16px;bottom:25px;font-size:13px}
+  .nav{bottom:14px;gap:12px}
+  .nav button{width:60px;height:48px;font-size:24px;border-radius:10px}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<section class="page"><div class="frame"><img src="slides/slide-01.png?v=1" alt="Слайд 1. Предложение для канала «ГЕМБА ДУБОВЕНКО»" draggable="false"></div></section>
+<section class="page"><div class="frame"><img src="slides/slide-02.png?v=1" alt="Слайд 2. Концепция совместного эфира" draggable="false"></div></section>
+<section class="page"><div class="frame"><img src="slides/slide-03.png?v=1" alt="Слайд 3. Что получает канал и аудитория" draggable="false"></div></section>
+<section class="page"><div class="frame"><img src="../../assets/slides/slide-04.png?v=5" alt="Слайд 4. Анастасия Кутузова" draggable="false"><a class="hotspot" href="https://t.me/kutuzova_profinance" target="_blank" rel="noopener" aria-label="Открыть Telegram-канал Анастасии" style="left:2%;top:55%;width:25%;height:18%"></a></div></section>
+<section class="page"><div class="frame"><img src="../../assets/slides/slide-05.png?v=4" alt="Слайд 5. Партнёрское вознаграждение" draggable="false"></div></section>
+<section class="page"><div class="frame"><img src="../../assets/slides/slide-06.png?v=4" alt="Слайд 6. Контакты для обсуждения эфира" draggable="false"><a class="hotspot" href="https://t.me/apolygalovv" target="_blank" rel="noopener" aria-label="Написать Артуру в Telegram" style="left:5%;top:68%;width:48%;height:11%"></a><a class="hotspot" href="https://t.me/kutuzova_profinance" target="_blank" rel="noopener" aria-label="Открыть Telegram-канал Анастасии" style="left:5%;top:80%;width:48%;height:11%"></a><a class="hotspot" href="https://t.me/apolygalovv" target="_blank" rel="noopener" aria-label="Открыть Telegram Артура по QR-блоку" style="left:65%;top:20%;width:28%;height:68%"></a></div></section>
+
+<div class="counter" id="counter">1 / 6</div>
+<div class="hint">Листайте колёсиком, стрелками ← → или кнопками</div>
+<div class="nav"><button id="prev" aria-label="Назад">←</button><button id="next" aria-label="Вперёд">→</button></div>
+
+<script>
+const pages=[...document.querySelectorAll('.page')];
+const counter=document.getElementById('counter');
+const progress=document.getElementById('progress');
+let idx=0;
+function current(){const w=innerWidth;return Math.min(pages.length-1,Math.max(0,Math.round(document.documentElement.scrollLeft/w)));}
+function update(){idx=current();counter.textContent=(idx+1)+' / '+pages.length;progress.style.width=((idx+1)/pages.length*100)+'%';}
+function go(i){pages[Math.max(0,Math.min(pages.length-1,i))].scrollIntoView({behavior:'smooth'});}
+addEventListener('scroll',update,{passive:true});
+addEventListener('resize',()=>{
+  pages[idx].scrollIntoView({behavior:'auto',block:'nearest',inline:'start'});
+  update();
+});
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(idx+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(idx-1);}
+  if(e.key==='Home'){e.preventDefault();go(0);}
+  if(e.key==='End'){e.preventDefault();go(pages.length-1);}
+});
+document.getElementById('prev').onclick=()=>go(idx-1);
+document.getElementById('next').onclick=()=>go(idx+1);
+update();
+</script>
+</body>
+</html>
